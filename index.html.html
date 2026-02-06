@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>The Button</title>
+  <style>
+    body {
+      margin: 0;
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #111;
+      font-family: sans-serif;
+      overflow: hidden;
+    }
+
+    button {
+      width: 200px;
+      height: 80px;
+      font-size: 24px;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      background: white;
+      color: black;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+
+      transition: all 0.15s ease;
+    }
+
+    .shake {
+      animation: shake 0.2s infinite;
+    }
+
+    @keyframes shake {
+      0% { transform: translate(0,0); }
+      25% { transform: translate(6px,-6px); }
+      50% { transform: translate(-6px,6px); }
+      75% { transform: translate(6px,6px); }
+      100% { transform: translate(-6px,-6px); }
+    }
+
+    /* subtle corner credit */
+    .corner-text {
+      position: fixed;
+      bottom: 12px;
+      right: 14px;
+      font-size: 12px;
+      color: white;
+      opacity: 0.08;   /* barely visible */
+      pointer-events: none;
+      user-select: none;
+    }
+  </style>
+</head>
+<body>
+
+<button id="btn">click</button>
+
+<div class="corner-text">made by Matthew R :)</div>
+
+<script>
+  let count = 0;
+  const btn = document.getElementById("btn");
+
+  const calmMessages = [
+    "you can stop",
+    "nothing bad happens if you leave",
+    "we can rest now",
+    "this doesn’t need an ending"
+  ];
+
+  btn.onclick = function () {
+    count++;
+
+    if (count > 10001) return;
+
+    // grow button physically (text always visible)
+    btn.style.width = Math.min(200 + count * 2, window.innerWidth) + "px";
+    btn.style.height = Math.min(80 + count * 1.2, window.innerHeight) + "px";
+    btn.style.fontSize = Math.min(24 + count * 0.2, 120) + "px";
+
+    document.body.style.background =
+      "hsl(" + (count * 4 % 360) + ", 40%, 10%)";
+
+    btn.textContent = "clicked " + count;
+
+    /* FIRST 100 */
+    if (count === 1) btn.textContent = "oh";
+    if (count === 5) btn.textContent = "hi";
+    if (count === 10) btn.textContent = "ok";
+    if (count === 25) btn.textContent = "still going";
+    if (count === 50) btn.textContent = "seriously";
+    if (count === 100) btn.textContent = "you could leave";
+
+    /* MID */
+    if (count === 200) btn.textContent = "this feels personal";
+    if (count === 400) btn.textContent = "do your friends know";
+    if (count === 600) btn.textContent = "please";
+    if (count === 800) btn.textContent = "what do you want";
+
+    /* BREAKDOWN */
+    if (count === 1000) {
+      btn.textContent = "LET ME BE!";
+      btn.style.background = "orange";
+    }
+
+    if (count === 1010) {
+      btn.textContent = "PLEASE.";
+      btn.classList.add("shake");
+      btn.style.background = "red";
+      btn.style.color = "white";
+      document.body.style.background = "darkred";
+    }
+
+    /* CALM */
+    if (count === 1500) {
+      btn.classList.remove("shake");
+      btn.textContent = "…okay";
+      btn.style.background = "white";
+      btn.style.color = "black";
+    }
+
+    if (count > 1500 && count < 10000 && Math.random() < 0.02) {
+      btn.textContent =
+        calmMessages[Math.floor(Math.random() * calmMessages.length)];
+    }
+
+    /* END */
+    if (count === 10000) {
+      btn.textContent = "what now?";
+      document.body.style.background = "#000";
+    }
+
+    if (count === 10001) {
+      btn.textContent = "...";
+      btn.onclick = null;
+    }
+  };
+</script>
+
+</body>
+</html>
+
